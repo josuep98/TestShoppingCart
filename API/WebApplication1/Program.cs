@@ -20,6 +20,7 @@ builder.Services.AddServices();
 
 builder.Services.AddControllers();
 
+#region Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -36,6 +37,20 @@ builder.Services.AddSwaggerGen(c =>
     });
     c.EnableAnnotations();
 });
+#endregion
+
+#region CORS
+var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy", policy =>
+    {
+        policy.WithOrigins(allowedOrigins ?? Array.Empty<string>())
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+#endregion
 
 var app = builder.Build();
 
@@ -50,6 +65,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseAuthorization();
+
+app.UseCors("CorsPolicy");
 
 app.MapControllers();
 
