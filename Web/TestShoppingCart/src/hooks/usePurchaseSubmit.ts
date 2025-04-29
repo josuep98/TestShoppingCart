@@ -20,9 +20,7 @@ export const usePurchaseSubmit = (selectedItems: PurchaseItem[], onClearSelectio
         try {
             const itemsToSend = selectedItems.map(item => ({
                 id: item.id,
-                name: item.name,
-                ...(item.catalogId && { catalogId: item.catalogId }),
-                ...(item.catalogDetail && { catalogDetail: item.catalogDetail })
+                name: item.name
             }));
 
             const result = await withLoading(saveProducts(itemsToSend));
