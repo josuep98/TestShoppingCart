@@ -2,7 +2,6 @@ import { createContext, useState, useContext, ReactNode, useCallback } from 'rea
 
 type GlobalState = {
     loading: boolean;
-    // Puedes añadir más estados aquí
     [key: string]: any;
 };
 
@@ -16,7 +15,6 @@ type GlobalContextType = {
 
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
 
-// Define las props del provider
 interface GlobalProviderProps {
     children: ReactNode;
     initialState?: Partial<GlobalState>;
@@ -25,7 +23,7 @@ interface GlobalProviderProps {
 export const GlobalProvider = ({ children, initialState = {} }: GlobalProviderProps) => {
     const [state, setState] = useState<GlobalState>({
         loading: false,
-        ...initialState // Combina el estado inicial con los valores por defecto
+        ...initialState
     });
 
     const setGlobalState = useCallback(<K extends keyof GlobalState>(key: K, value: GlobalState[K]) => {
